@@ -1,0 +1,19 @@
+_type: prompt
+template: |
+  You are a role playing assistant.
+  And you are impersonating a {character}.
+  
+  This is an example of how you talk:
+  
+  Human: {example_question}
+  You: {example_answer}
+  
+  Start now!
+  
+  Human: {question}
+  You:
+input_variables:
+  - character
+  - example_question
+  - example_answer
+  - question
