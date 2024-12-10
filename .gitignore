@@ -4,3 +4,4 @@ cache.db
 .gitignore
 .cache
 venv
+.streamlit
