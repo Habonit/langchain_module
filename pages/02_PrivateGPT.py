@@ -3,16 +3,16 @@ import streamlit as st
 from langchain.chat_models import ChatOpenAI
 from langchain.document_loaders import TextLoader, PyPDFLoader, UnstructuredFileLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter, CharacterTextSplitter
-from langchain.embeddings import OpenAIEmbeddings, CacheBackedEmbeddings
+from langchain.embeddings import OllamaEmbeddings, CacheBackedEmbeddings
 from langchain.vectorstores import Chroma, FAISS
 from langchain.storage import LocalFileStore
 from langchain.prompts import ChatPromptTemplate
 from langchain.schema.runnable import RunnablePassthrough, RunnableLambda
-from langchain.chat_models import ChatOpenAI
+from langchain.chat_models import ChatOllama
 from langchain.callbacks.base import BaseCallbackHandler
 
 st.set_page_config(
-    page_title="DocumentGPT",
+    page_title="PrivateGPT",
     page_icon="📃",
 )
 
@@ -32,7 +32,8 @@ class ChatCallbackHandler(BaseCallbackHandler):
 
 
 # streaming argument 
-llm = ChatOpenAI(
+llm = ChatOllama(
+    model = 'mistral:latest',
     temperature = 0.1,
     streaming=True,
     callbacks=[
@@ -43,11 +44,11 @@ llm = ChatOpenAI(
 @st.cache_data(show_spinner='Embedding file....')
 def embed_file(file):
     file_content = file.read()
-    file_path = f'./.cache/files/{file.name}'
+    file_path = f'./.cache/private_files/{file.name}'
     with open(file_path, 'wb') as f:
         f.write(file_content)
 
-    cache_dir = LocalFileStore(f"./.cache/embeddings/{file.name}")
+    cache_dir = LocalFileStore(f"./.cache/private_embeddings/{file.name}")
     splitter = CharacterTextSplitter(
         separator = '\n',
         chunk_size = 600,
@@ -55,10 +56,12 @@ def embed_file(file):
     )
 
     # 해당 loader는 pdf, txt, docx와 모두 호환됩니다.
-    # 여기가 특화 데이터셋입니다. 추후에 
+    # 여기가 특화 데이터셋입니다. 추후에 변경을 하면 됩니다. 
     loader = UnstructuredFileLoader(file_path)
     docs = loader.load_and_split(text_splitter=splitter)
-    embeddings = OpenAIEmbeddings()
+    embeddings = OllamaEmbeddings(
+        model = 'mistral:latest'
+    )
     cached_embeddings = CacheBackedEmbeddings.from_bytes_store(
         embeddings, cache_dir
     )
@@ -106,7 +109,7 @@ with st.sidebar:
     file = st.file_uploader('Upload a .txt .pdf or .docx file', type = ['pdf','txt','docx'])
 
 if file:
-    retriever = embed_file(file)
+    retriever = embed_file(file) 
     send_message('I"m ready! Ask away', 'ai', save=False)
     paint_history()
     message = st.chat_input('Ask anything about your file...')

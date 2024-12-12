@@ -5,3 +5,4 @@ cache.db
 .cache
 venv
 .streamlit
+model/
