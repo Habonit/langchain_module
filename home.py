@@ -7,7 +7,6 @@ st.set_page_config(
 today = datetime.today().strftime("%H:%M:%S")
 st.write(today)
 
-
 st.title("FullstackGPT Home")
 
 with st.sidebar:
@@ -33,8 +32,8 @@ st.markdown(
     Here are the apps I made:
 
     - [x] [DocumentGPT](/DocumentGPT)
-    - [ ] [PrivateGPT](/PrivateGPT)
-    - [ ] [QuizGPT](/QuizGPT)
+    - [x] [PrivateGPT](/PrivateGPT)
+    - [x] [QuizGPT](/QuizGPT)
     - [ ] [SiteGPT](/SiteGPT)
     - [ ] [MeetingGPT](/MeetingGPT)
     - [ ] [InvestorGPT](/InvestorGPT)

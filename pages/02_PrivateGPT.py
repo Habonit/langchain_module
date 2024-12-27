@@ -4,11 +4,13 @@ from langchain.chat_models import ChatOpenAI
 from langchain.document_loaders import TextLoader, PyPDFLoader, UnstructuredFileLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter, CharacterTextSplitter
 from langchain.embeddings import OllamaEmbeddings, CacheBackedEmbeddings
-from langchain.vectorstores import Chroma, FAISS
+# from langchain.vectorstores import Chroma, FAISS
+from langchain_community.vectorstores import FAISS, Chroma
 from langchain.storage import LocalFileStore
 from langchain.prompts import ChatPromptTemplate
 from langchain.schema.runnable import RunnablePassthrough, RunnableLambda
-from langchain.chat_models import ChatOllama
+# from langchain.chat_models import ChatOllama
+from langchain_ollama import ChatOllama
 from langchain.callbacks.base import BaseCallbackHandler
 
 st.set_page_config(
